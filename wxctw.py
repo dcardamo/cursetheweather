@@ -18,11 +18,105 @@ Michael Soulier, 2004"""
 
 class CtwFrame(wxFrame):
   def __init__(self, parent, ID, title):
+    # Make the top level frame
     wxFrame.__init__(self, parent, ID, title,
         wxDefaultPosition, wxSize(500, 500))
     self.CreateStatusBar()
     self.SetStatusText("This is the statusbar")
 
+    self.make_menu()
+
+    left_panel = self.make_left_panel()
+    right_panel = self.make_right_panel()
+
+    box_sizer = wxBoxSizer(wxHORIZONTAL)
+    box_sizer.Add(left_panel, 1, wxEXPAND)
+    box_sizer.Add(right_panel, 2, wxEXPAND)
+
+    self.SetAutoLayout(true)
+    self.SetSizer(box_sizer)
+    self.Layout()
+
+    self.location = "CAXX0343"
+    self.weather = None
+
+  def make_left_panel(self):
+    left_panel = wxPanel(self, -1, size=(50,50), style=wxSUNKEN_BORDER)
+    left_panel.SetBackgroundColour("WHITE")
+
+    left_panelbox = wxStaticBox(left_panel,
+                                -1,
+                                "Current Conditions",
+                                size=(50,50))
+
+    left_panelbox_sizer = wxStaticBoxSizer(left_panelbox, wxVERTICAL)
+
+    left_panel.SetAutoLayout(true)
+    left_panel.SetSizer(left_panelbox_sizer)
+    left_panel.Layout()
+    return left_panel
+
+  def make_right_panel(self):
+    right_panel = wxPanel(self, -1, size=(50,50), style=wxNO_BORDER)
+    right_panel.SetBackgroundColour("WHITE")
+
+    right_panelbox = wxStaticBox(right_panel,
+                                 -1,
+                                 "Forecast Conditions",
+                                 size=(50,50))
+
+    right_panelbox_sizer = wxStaticBoxSizer(right_panelbox, wxVERTICAL)
+
+    # Make a grid sizer for the second panel
+    subpanel1 = wxPanel(right_panel, -1, size=(10,10), style=wxSIMPLE_BORDER)
+    subpanel2 = wxPanel(right_panel, -1, size=(10,10), style=wxSIMPLE_BORDER)
+    subpanel3 = wxPanel(right_panel, -1, size=(10,10), style=wxSIMPLE_BORDER)
+    subpanel4 = wxPanel(right_panel, -1, size=(10,10), style=wxSIMPLE_BORDER)
+    subpanel5 = wxPanel(right_panel, -1, size=(10,10), style=wxSIMPLE_BORDER)
+    subpanel6 = wxPanel(right_panel, -1, size=(10,10), style=wxSIMPLE_BORDER)
+    subpanel7 = wxPanel(right_panel, -1, size=(10,10), style=wxSIMPLE_BORDER)
+    subpanel8 = wxPanel(right_panel, -1, size=(10,10), style=wxSIMPLE_BORDER)
+    subpanel9 = wxPanel(right_panel, -1, size=(10,10), style=wxSIMPLE_BORDER)
+    subpanel10 = wxPanel(right_panel, -1, size=(10,10), style=wxSIMPLE_BORDER)
+
+    forecast_panels = [
+      subpanel1,
+      subpanel2,
+      subpanel3,
+      subpanel4,
+      subpanel5,
+      subpanel6,
+      subpanel7,
+      subpanel8,
+      subpanel9,
+      subpanel10
+      ]
+
+    self.pop_forecast(forecast_panels)
+
+    grid_sizer = wxGridSizer(5, 2, 1, 1)
+    grid_sizer.Add(subpanel1, 1, wxEXPAND)
+    grid_sizer.Add(subpanel2, 1, wxEXPAND)
+    grid_sizer.Add(subpanel3, 1, wxEXPAND)
+    grid_sizer.Add(subpanel4, 1, wxEXPAND)
+    grid_sizer.Add(subpanel5, 1, wxEXPAND)
+    grid_sizer.Add(subpanel6, 1, wxEXPAND)
+    grid_sizer.Add(subpanel7, 1, wxEXPAND)
+    grid_sizer.Add(subpanel8, 1, wxEXPAND)
+    grid_sizer.Add(subpanel9, 1, wxEXPAND)
+    grid_sizer.Add(subpanel10, 1, wxEXPAND)
+
+    right_panelbox_sizer.Add(grid_sizer,
+                             1,
+                             wxALL | wxEXPAND | wxALIGN_CENTER,
+                             4)
+
+    right_panel.SetAutoLayout(true)
+    right_panel.SetSizer(right_panelbox_sizer)
+    right_panel.Layout()
+    return right_panel
+
+  def make_menu(self):
     menuFile = wxMenu()
     menuFile.Append(ID_ABOUT, "&About",
         "More information about this program")
@@ -41,13 +135,19 @@ class CtwFrame(wxFrame):
 
     self.SetMenuBar(menuBar)
 
-    self.location = "CAXX0343"
-    self.weather = None
-
     EVT_MENU(self, ID_ABOUT, self.OnAbout)
     EVT_MENU(self, ID_EXIT, self.OnExit)
     EVT_MENU(self, ID_LOCATION, self.OnLocation)
     EVT_MENU(self, ID_UPDATE, self.OnUpdate)
+
+  def pop_forecast(self, forecast_list):
+    """This method loops on the list of panels given, and populates them
+    with forecast data."""
+    i = 0
+    for panel in forecast_list:
+      i += 1
+      label = "Date foo, panel %d" % i
+      text = wxStaticText(panel, -1, label=label)
 
   def OnUpdate(self, event):
     self.SetStatusText("Fetching weather data for location %s" % self.location)
