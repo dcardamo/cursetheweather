@@ -52,19 +52,16 @@ class CtwFrame(wxFrame):
   def OnUpdate(self, event):
     self.SetStatusText("Fetching weather data for location %s" % self.location)
     self.count = 0
-    self.progress = wxProgressDialog(
+    progress = wxProgressDialog(
         "Fetching weather data for location %s" % self.location,
         "Updating",
         maximum = 100,
         parent = self,
         style = wxPD_APP_MODAL)
-    self.updateTimer = wxTimer(self, ID_UPDATE_TIMER)
-    EVT_TIMER(self,
-        ID_UPDATE_TIMER,
-        self.OnProgressUpdate)
+    self.updateTimer = CtwProgressTimer(progress)
 
     try:
-      self.updateTimer.Start(50)
+      self.updateTimer.Start(500)
       weather = weatherfeed.Weather(self.location)
       self.SetStatusText("Weather data updated for location %s" % self.location)
       self.currentConditions = weather.currentConditions
@@ -72,7 +69,7 @@ class CtwFrame(wxFrame):
     finally:
       self.updateTimer.Stop()
       self.updateTimer = None
-      self.progress.Destroy()
+      progress.Destroy()
 
   def OnProgressUpdate(self, event):
     self.count += 10
@@ -109,6 +106,7 @@ class CtwProgressTimer(wxTimer):
     print "got notify event"
     self.count += 10
     self.progress.Update(self.count)
+    print "timer notify called"
 
 class CtwGui(wxApp):
   def OnInit(self):
