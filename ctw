@@ -206,7 +206,7 @@ def scnDay(day):
                                          weather.forecast[day]["low"]));line+=0
   except curses.error: pass
   try:
-    win.addstr(line,17,"Wind:%s%s" %( weather.forecast[day]["day"]["wind"]["speed"],
+    win.addstr(line,15,"Wind:%s %s" %( weather.forecast[day]["day"]["wind"]["speed"],
                                     weather.forecast[day]["day"]["wind"]["direction"])
              );line+=1
   except curses.error: pass
@@ -276,7 +276,7 @@ def usage():
   This program will display the weather for a city on the console.
   Copyright (c)2004 Dan Cardamore <dan@hld.ca>
 
-  ctw.py --location=<location>
+  ctw --location=<location>
     options:
       --location <location> : the city location (see below)
       --refresh=<minutes> : the delay in minutes to refresh.
