@@ -1,5 +1,7 @@
 #!/usr/bin/python2.3
 
+"This is a wxPython GUI wrapper for Curse the Weather application."
+
 from wxPython.wx import *
 import weatherfeed, sys
 
@@ -34,8 +36,22 @@ class CtwFrame(wxFrame):
 
         self.SetMenuBar(menuBar)
 
+        self.location = ""
+
         EVT_MENU(self, ID_ABOUT, self.OnAbout)
         EVT_MENU(self, ID_EXIT, self.OnExit)
+        EVT_MENU(self, ID_LOCATION, self.OnLocation)
+
+    def OnLocation(self, event):
+        dialog = wxTextEntryDialog(
+                self,
+                "Enter location code",
+                "Location",
+                self.location)
+        if dialog.ShowModal() == wxID_OK:
+            self.location = dialog.GetValue()
+            print "location is %s" % self.location
+        dialog.Destroy()
 
     def OnAbout(self, event):
         global dialog
