@@ -13,7 +13,7 @@ from threading import Timer
 import curses
 import weatherfeed
 
-version = "0.2"
+version = "0.3beta"
 
 class asciiIcons:
   def __init__(self):
@@ -243,7 +243,7 @@ def update(stdscr):
   global weather
   while 1:
     try:
-      weather = weatherfeed.Weather(location)
+      weather = weatherfeed.Weather(location, metric)
     except urllib2.URLError:
       time.sleep(60)
       continue
@@ -303,6 +303,7 @@ def usage():
       -h, --help : this help text
       -d : debug output
       --version: prints the version of this application
+      --nometric: print information in imperial units
 
    To determine your location code (LOCATION): 
     1. visit: http://www.weather.com
@@ -324,7 +325,7 @@ if __name__ == "__main__":
   import getopt
   try:
     opts, args = getopt.getopt(sys.argv[1:], 
-                      "hrv:d", ["help","refresh=","version"])
+                      "hrv:d", ["help","refresh=","version","nometric"])
   except getopt.GetoptError:
     usage()
     sys.exit(2)
@@ -335,6 +336,8 @@ if __name__ == "__main__":
   location = ""
   global refresh
   refresh = 60
+  global metric
+  metric = True
 
   for o, a in opts:
     if o == "-d":
@@ -347,6 +350,8 @@ if __name__ == "__main__":
       sys.exit()
     if o in ("-r", "--refresh"):
       refresh = int(a)
+    if o in ("--nometric"):
+      metric = False
 
   if len(args) != 1:
     print "invalid location, or too many arguments"
