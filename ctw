@@ -245,6 +245,9 @@ def update(stdscr):
 
   del weather
   global refreshTimer
+  try:
+    refreshTimer.cancel()
+  except: pass
   refreshTimer = Timer(refresh * 60, update, [stdscr])
   refreshTimer.start()
 
@@ -270,6 +273,8 @@ def main(stdscr):
     except:
       quit()
     if c == ord('q'): quit()  # quit
+    else:
+      update(stdscr)
 
 def printVersion():
   print "ctw version %s"%(version)
