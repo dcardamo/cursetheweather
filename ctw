@@ -147,14 +147,18 @@ def scnCurrent(win):
   icons = asciiIcons()
   win.addstr(line,2, icons.getIcon(weather.currentConditions["type"]));line+=6
   win.addstr(line,2,("%s" %(weather.currentConditions["type"])).center(maxx),curses.color_pair(4));line+=2
-  win.addstr(line,2,"Temp:\t%s" %(weather.currentConditions["temperature"]));line+=1
-  win.addstr(line,2,"Wind:\t%s %s" %( weather.currentConditions["wind"]["speed"],
+  win.addstr(line,2,"     Temp: %s" %(weather.currentConditions["temperature"]));line+=1
+  win.addstr(line,2,"     Wind: %s %s" %( weather.currentConditions["wind"]["speed"],
                                     weather.currentConditions["wind"]["direction"])
              );line+=1
-  win.addstr(line,2,"Vis:\t%s" %(weather.currentConditions["visibility"]));line+=1
-  win.addstr(line,2,"Humidity:\t%s" %(weather.currentConditions["humidity"]));line+=1
-  win.addstr(line,2,"Sunrise:\t%s" %(weather.currentConditions["sunrise"]));line+=1
-  win.addstr(line,2,"Sunset:\t%s" %(weather.currentConditions["sunset"]));line+=1
+  win.addstr(line,2,"Visbility: %s" %(weather.currentConditions["visibility"]));line+=1
+  win.addstr(line,2," Humidity: %s" %(weather.currentConditions["humidity"]));line+=1
+  line += 1
+  win.addstr(line,2,"  Sunrise: %s" %(weather.currentConditions["sunrise"]));line+=1
+  win.addstr(line,2,"   Sunset: %s" %(weather.currentConditions["sunset"]));line+=1
+  line += 1
+  win.addstr(line,2," UV index: %s" %(weather.currentConditions["uv"]["index"]));line+=1
+  win.addstr(line,2,"     risk: %s" %(weather.currentConditions["uv"]["risk"]));line+=1
 
   win.box()
   win.addstr(0,1,"Current Conditions",curses.color_pair(2)|curses.A_BOLD); line += 1
@@ -295,8 +299,13 @@ def usage():
   """ %(version)
 
 if __name__ == "__main__":
-  import getopt
+  if weatherfeed.version < 0.2:
+    print "This version of ctw requires weatherfeed.py version 0.2 and above"
+    print "See: http://opensource.hld.ca/trac.cgi/wiki/CurseTheWeather"
+    print "to get the latest version."
+    sys.exit(1)
 
+  import getopt
   try:
     opts, args = getopt.getopt(sys.argv[1:], 
                       "hrv:d", ["help","refresh=","version"])

@@ -13,7 +13,7 @@ from xml.dom.minidom import parse, parseString
 import urllib2
 import pprint
 
-version = 0.1
+version = 0.2
 
 class Weather:
   """ Get the weather from weather.com's XML feed.
@@ -93,6 +93,24 @@ class Weather:
 
       if elem.nodeName == 'dewp':
         self.currentConditions["dewpoint"] = elem.firstChild.data
+
+      if elem.nodeName == 'bar':
+        self.currentConditions["bar"] = {}
+        for subelem in elem.childNodes:
+          if subelem.nodeName == 'r':
+            self.currentConditions["bar"]["reading"] = subelem.firstChild.data
+
+          if subelem.nodeName == 'd':
+            self.currentConditions["bar"]["direction"] = subelem.firstChild.data
+
+      if elem.nodeName == 'uv':
+        self.currentConditions["uv"] = {}
+        for subelem in elem.childNodes:
+          if subelem.nodeName == 'i':
+            self.currentConditions["uv"]["index"] = subelem.firstChild.data
+
+          if subelem.nodeName == 't':
+            self.currentConditions["uv"]["risk"] = subelem.firstChild.data
 
       if elem.nodeName == 'wind':
         self.currentConditions["wind"] = {}
