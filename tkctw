@@ -1,0 +1,41 @@
+#!/usr/bin/env python2.3
+# $HeadURL: https://hld.ca/svn/open/trunk/ctw/ctw $
+# $Id: ctw 262 2004-06-07 19:56:27Z dan $
+# vim: ft=python ts=2 sw=2 et:
+
+# Copyright Michael P. Soulier <msoulier@digitaltorque.ca>
+# Licensed under the GNU GPL version 2.0
+# See GPL.gz in source distribution for more information
+
+import sys, time, string
+from threading import Timer
+from Tkinter import *
+import weatherfeed
+
+version = "0.2"
+
+out = sys.stdout.write
+err = sys.stderr.write
+
+usage = "Usage: tkctw <location ie. CAXX0343>"
+
+def main():
+  # For now, take the location from the command line.
+  if len(sys.argv) != 2:
+    err(usage + "\n")
+    sys.exit(1)
+
+  location = sys.argv[1]
+  weather = weatherfeed.Weather(location, True)
+
+  print weather.currentConditions.keys()
+  print ""
+  for i in weather.forecast:
+    for key in i.keys():
+      print key, i[key]
+      print ""
+
+  sys.exit(0)
+
+if __name__ == '__main__':
+  main()
