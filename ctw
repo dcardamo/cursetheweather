@@ -241,7 +241,13 @@ def quit():
 
 def update(stdscr):
   global weather
-  weather = weatherfeed.Weather(location)
+  while 1:
+    try:
+      weather = weatherfeed.Weather(location)
+    except urllib2.URLError:
+      time.sleep(60)
+      continue
+    break
 
   scnTitle(twin)
   scnCurrent(cwin)
