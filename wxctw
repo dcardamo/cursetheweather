@@ -1,4 +1,4 @@
-#!/usr/bin/python2.2
+#!/usr/bin/python2.3
 
 from wxPython.wx import *
 import weatherfeed, sys
@@ -23,6 +23,17 @@ class CtwFrame(wxFrame):
         menuBar.Append(menu, "&File");
 
         self.SetMenuBar(menuBar)
+
+        EVT_MENU(self, ID_ABOUT, self.OnAbout)
+        EVT_MENU(self, ID_EXIT, self.OnExit)
+
+    def OnAbout(self, event):
+        dialog = wxMessageDialog(self, "foo", "caption", wxOK)
+        dialog.ShowModal()
+        dialog.Destroy()
+
+    def OnExit(self, event):
+        self.Close(true)
 
 class CtwGui(wxApp):
     def OnInit(self):
