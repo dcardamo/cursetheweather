@@ -10,6 +10,7 @@ ID_ABOUT    = 101
 ID_EXIT     = 102
 ID_LOCATION = 103
 ID_UPDATE   = 104
+ID_UPDATE_TIMER = 105
 
 about = """\
     Copyright Dan Cardamore and
@@ -49,20 +50,35 @@ class CtwFrame(wxFrame):
     EVT_MENU(self, ID_UPDATE, self.OnUpdate)
 
   def OnUpdate(self, event):
-    self.weather = weatherfeed.Weather(self.location)
-#        max = 100
-#        dialog = wxProgressDialog(
-#                "Updating weather data",
-#                "Please wait",
-#                maximum = max,
-#                parent = self,
-#                style = wxPD_CAN_ABORT | wxPD_APP_MODAL)
-#        keep_going = True
-#        progress = 0
-#        while keep_going and progress < max:
-#            progress += 5
-#            keep_going = dialog.Update(progress, "%d%%" % progress)
-#        dialog.Destroy()
+    self.SetStatusText("Fetching weather data for location %s" % self.location)
+    self.count = 0
+    self.progress = wxProgressDialog(
+        "Fetching weather data for location %s" % self.location,
+        "Updating",
+        maximum = 100,
+        parent = self,
+        style = wxPD_APP_MODAL)
+    self.updateTimer = wxTimer(self, ID_UPDATE_TIMER)
+    EVT_TIMER(self,
+        ID_UPDATE_TIMER,
+        self.OnProgressUpdate)
+
+    try:
+      self.updateTimer.Start(50)
+      weather = weatherfeed.Weather(self.location)
+      self.SetStatusText("Weather data updated for location %s" % self.location)
+      self.currentConditions = weather.currentConditions
+      self.forecast = weather.forecast
+    finally:
+      self.updateTimer.Stop()
+      self.updateTimer = None
+      self.progress.Destroy()
+
+  def OnProgressUpdate(self, event):
+    self.count += 10
+    if self.count > 100:
+      self.count = 0
+    self.progress.Update(self.count)
 
   def OnLocation(self, event):
     dialog = wxTextEntryDialog(
@@ -72,17 +88,27 @@ class CtwFrame(wxFrame):
       self.location)
     if dialog.ShowModal() == wxID_OK:
       self.location = dialog.GetValue()
-      print "location is %s" % self.location
+      self.SetStatusText("Location set to %s" % self.location)
     dialog.Destroy()
 
   def OnAbout(self, event):
-    global dialog
     dialog = wxMessageDialog(self, about, "Curse the Weather", wxOK)
     dialog.ShowModal()
     dialog.Destroy()
 
   def OnExit(self, event):
     self.Close(true)
+
+class CtwProgressTimer(wxTimer):
+  def __init__(self, progress):
+    wxTimer.__init__(self)
+    self.progress = progress
+    self.count = 0
+
+  def Notify(self):
+    print "got notify event"
+    self.count += 10
+    self.progress.Update(self.count)
 
 class CtwGui(wxApp):
   def OnInit(self):
