@@ -152,7 +152,10 @@ def scnCurrent(win):
   win.addstr(line,2, icons.getIcon(weather.currentConditions["type"]));line+=6
   win.addstr(line,2,("%s" %(weather.currentConditions["type"])).center(maxx),curses.color_pair(4));line+=2
   win.addstr(line,2,"     Temp: %s" %(weather.currentConditions["temperature"]));line+=1
-  win.addstr(line,2,"     Wind: %s %s" %( weather.currentConditions["wind"]["speed"],
+  if weather.currentConditions["wind"]["speed"] == "calm":
+    win.addstr(line,2,"     Wind: Calm") ;line+=1
+  else:
+    win.addstr(line,2,"     Wind: %s %s" %( weather.currentConditions["wind"]["speed"],
                                     weather.currentConditions["wind"]["direction"])
              );line+=1
   win.addstr(line,2,"Visbility: %s" %(weather.currentConditions["visibility"]));line+=1
