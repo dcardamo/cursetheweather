@@ -134,7 +134,8 @@ def scnTitle(win):
     win.addstr(0,1, 
         ("Location %s  --  Updated: %s" %
         (weather.currentConditions["cityname"], 
-        weather.currentConditions["observed"] )).center(maxx)
+        weather.currentConditions["observed"] )).center(maxx),
+        curses.A_BOLD
       )
   except curses.error: pass
   win.refresh()
@@ -156,7 +157,7 @@ def scnCurrent(win):
   win.addstr(line,2,"Sunset:\t%s" %(weather.currentConditions["sunset"]));line+=1
 
   win.box()
-  win.addstr(0,1,"Current Conditions",curses.color_pair(2)); line += 1
+  win.addstr(0,1,"Current Conditions",curses.color_pair(2)|curses.A_BOLD); line += 1
   win.refresh()
 
 def scnForecast(win):
@@ -187,7 +188,7 @@ def scnForecast(win):
     day+=1
   win.box()
   try:
-    win.addstr(0,36,"Forecast Conditions",curses.color_pair(2)); line += 1
+    win.addstr(0,36,"Forecast Conditions",curses.color_pair(2)|curses.A_BOLD); line += 1
   except curses.error: pass
   win.refresh()
 
