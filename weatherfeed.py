@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-# $HeadURL:$
-# $Id:$
+# $HeadURL$
+# $Id$
 # vim: ft=python ts=2 sw=2 et:
 
 # Copyright Dan Cardamore <dan@hld.ca>
@@ -12,6 +12,8 @@
 from xml.dom.minidom import parse, parseString
 import urllib2
 import pprint
+
+version = 0.1
 
 class Weather:
   """ Get the weather from weather.com's XML feed.

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # $HeadURL$
-# $Id:$
+# $Id$
 # vim: ft=python ts=2 sw=2 et:
 
 # Copyright Dan Cardamore <dan@hld.ca>
@@ -11,7 +11,9 @@ import sys,time,string
 from threading import Timer
 
 import curses
-from weatherfeed import Weather
+import weatherfeed
+
+version = "0.1"
 
 class asciiIcons:
   def __init__(self):
@@ -229,7 +231,7 @@ def quit():
 
 def update(stdscr):
   global weather
-  weather = Weather(location)
+  weather = weatherfeed.Weather(location)
 
   scnTitle(twin)
   scnCurrent(cwin)
@@ -264,18 +266,23 @@ def main(stdscr):
       quit()
     if c == ord('q'): quit()  # quit
 
+def printVersion():
+  print "ctw version %s"%(version)
+  print "weatherfeed.py backend version: %2.2f"%(weatherfeed.version)
+
 def usage():
   print """
-  Welcome to "Curse the Weather"
+  Welcome to "Curse the Weather" Version %s
   This program will display the weather for a city on the console.
   Copyright (c)2004 Dan Cardamore <dan@hld.ca>
 
   ctw.py --location=<location>
     options:
-      -r <minutes>, --refresh=<minutes> : the delay in minutes to refresh.
+      --location <location> : the city location (see below)
+      --refresh=<minutes> : the delay in minutes to refresh.
       -h, --help : this help text
-      -l <location>, --location <location> : the city location (see below)
       -d : debug output
+      --version: prints the version of this application
 
    To determine your location code: 
     1. visit: http://www.weather.com
@@ -285,14 +292,14 @@ def usage():
     4. Your location code is the part after "local/" and before "?from"
        in this example it is CAXX0343
 
-  """
+  """ %(version)
 
 if __name__ == "__main__":
   import getopt
 
   try:
     opts, args = getopt.getopt(sys.argv[1:], 
-                      "hlr:d", ["help","location=","refresh="])
+                      "hlrv:d", ["help","location=","refresh=","version"])
   except getopt.GetoptError:
     usage()
     sys.exit(2)
@@ -307,6 +314,9 @@ if __name__ == "__main__":
   for o, a in opts:
     if o == "-d":
       debug = True
+    if o in ("-v", "--version"):
+      printVersion()
+      sys.exit(1)
     if o in ("-h", "--help"):
       usage()
       sys.exit()
