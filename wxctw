@@ -3,24 +3,34 @@
 from wxPython.wx import *
 import weatherfeed, sys
 
-ID_ABOUT = 101
-ID_EXIT  = 102
+ID_ABOUT    = 101
+ID_EXIT     = 102
+ID_LOCATION = 103
+
+about = """\
+Copyright Dan Cardamore and
+Michael Soulier, 2004"""
 
 class CtwFrame(wxFrame):
     def __init__(self, parent, ID, title):
         wxFrame.__init__(self, parent, ID, title,
-                         wxDefaultPosition, wxSize(200, 150))
+                         wxDefaultPosition, wxSize(500, 500))
         self.CreateStatusBar()
         self.SetStatusText("This is the statusbar")
 
-        menu = wxMenu()
-        menu.Append(ID_ABOUT, "&About",
-                    "More information about this program")
-        menu.AppendSeparator()
-        menu.Append(ID_EXIT, "E&xit", "Terminate the program")
+        menuFile = wxMenu()
+        menuFile.Append(ID_ABOUT, "&About",
+                "More information about this program")
+        menuFile.AppendSeparator()
+        menuFile.Append(ID_EXIT, "E&xit", "Terminate the program")
+
+        menuSettings = wxMenu()
+        menuSettings.Append(ID_LOCATION, "&Location",
+                "Set your desired location")
 
         menuBar = wxMenuBar()
-        menuBar.Append(menu, "&File");
+        menuBar.Append(menuFile, "&File");
+        menuBar.Append(menuSettings, "&Settings");
 
         self.SetMenuBar(menuBar)
 
@@ -28,7 +38,8 @@ class CtwFrame(wxFrame):
         EVT_MENU(self, ID_EXIT, self.OnExit)
 
     def OnAbout(self, event):
-        dialog = wxMessageDialog(self, "foo", "caption", wxOK)
+        global dialog
+        dialog = wxMessageDialog(self, about, "Curse the Weather", wxOK)
         dialog.ShowModal()
         dialog.Destroy()
 
