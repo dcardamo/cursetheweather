@@ -129,6 +129,7 @@ def initColors():
   except curses.error: pass
 
 def scnTitle(win):
+  win.clear()
   maxy,maxx = win.getmaxyx()
   maxx -= 2
   win.bkgd(" ",curses.color_pair(1))
@@ -143,6 +144,7 @@ def scnTitle(win):
   win.refresh()
 
 def scnCurrent(win):
+  win.clear()
   maxy,maxx = win.getmaxyx()
   maxx -= 2
   line = 0
@@ -167,6 +169,7 @@ def scnCurrent(win):
   win.refresh()
 
 def scnForecast(win):
+  win.clear()
   maxy,maxx = win.getmaxyx()
   maxx -= 2
   line = 0
@@ -204,6 +207,7 @@ def scnDay(day):
     win = dayWindows.pop(0)
   except:
     return  #this one wasn't allocated a window so just return
+  win.clear()
   maxy,maxx = win.getmaxyx()
   maxx -= 2
   line = 1
