@@ -169,7 +169,6 @@ def scnCurrent(win):
   win.refresh()
 
 def scnForecast(win):
-  win.clear()
   maxy,maxx = win.getmaxyx()
   maxx -= 2
   line = 0
