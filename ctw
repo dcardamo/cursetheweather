@@ -39,7 +39,7 @@ class asciiIcons:
      __         _   
    /-   \_/\---/ \  
    |         --   | 
-   |______________| 
+   \-_/---\__--__-| 
                     
                     
 """
@@ -96,6 +96,8 @@ class asciiIcons:
     type is a string which refers to the icon wanted"""
     if type == "Partly Cloudy":
       return self.partlycloudy
+    elif type == "Mostly Cloudy":
+      return self.cloudy
     elif type == "Cloudy":
       return self.cloudy
     elif type == "Clear":
