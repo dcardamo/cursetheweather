@@ -13,7 +13,7 @@ from threading import Timer
 import curses
 import weatherfeed
 
-version = "0.1"
+version = "0.2"
 
 class asciiIcons:
   def __init__(self):
@@ -276,15 +276,14 @@ def usage():
   This program will display the weather for a city on the console.
   Copyright (c)2004 Dan Cardamore <dan@hld.ca>
 
-  ctw --location=<location>
+  ctw [options] LOCATION
     options:
-      --location <location> : the city location (see below)
       --refresh=<minutes> : the delay in minutes to refresh.
       -h, --help : this help text
       -d : debug output
       --version: prints the version of this application
 
-   To determine your location code: 
+   To determine your location code (LOCATION): 
     1. visit: http://www.weather.com
     2. get your local forecast
     3. look at the URL, it will look similar to:
@@ -299,7 +298,7 @@ if __name__ == "__main__":
 
   try:
     opts, args = getopt.getopt(sys.argv[1:], 
-                      "hlrv:d", ["help","location=","refresh=","version"])
+                      "hrv:d", ["help","refresh=","version"])
   except getopt.GetoptError:
     usage()
     sys.exit(2)
@@ -320,10 +319,16 @@ if __name__ == "__main__":
     if o in ("-h", "--help"):
       usage()
       sys.exit()
-    if o in ("-l", "--location"):
-      location = a
     if o in ("-r", "--refresh"):
       refresh = int(a)
+
+  if len(args) != 1:
+    print "invalid location, or too many arguments"
+    usage()
+    sys.exit(2)
+
+  for arg in args:
+    location = arg
 
   if location == "":
     print "Invalid location!"
