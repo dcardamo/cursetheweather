@@ -1,4 +1,4 @@
-# Licensed under the GNU GPL version 2.0
+# Licensed under the GNU GPL version 2.0 
 # See GPL.gz in source distribution for more information
 
 See http://opensource.hld.ca/trac.cgi/wiki/CurseTheWeather for more
