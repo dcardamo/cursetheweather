@@ -62,6 +62,12 @@ class Weather:
       if node.nodeName == 'loc':
         self._setCurrentConditions(node)
 
+    if self.forecast[0]["day"]["type"] == "N/A":
+      self.forecast[0]["day"]["type"] = self.currentConditions["type"]
+    if self.forecast[0]["day"]["wind"]["speed"] == "N/A" and self.forecast[0]["day"]["wind"]["direction"] == "N/A":
+      self.forecast[0]["day"]["wind"]["speed"] = self.currentConditions["wind"]["speed"]
+      self.forecast[0]["day"]["wind"]["direction"] = self.currentConditions["wind"]["direction"]
+
   def _setCurrentConditions(self, node):
     for elem in node.childNodes:
       if elem.nodeName == 'suns':
@@ -146,10 +152,16 @@ class Weather:
     self.forecast[index]["Date"] = date
     for elem in node.childNodes:
       if elem.nodeName == 'hi':
-        self.forecast[index]["high"] = elem.firstChild.data
+        if elem.firstChild.data == "N/A":
+          self.forecast[index]["high"] = "NA"
+        else:
+          self.forecast[index]["high"] = elem.firstChild.data
 
       if elem.nodeName == 'low':
-        self.forecast[index]["low"] = elem.firstChild.data
+        if elem.firstChild.data == "N/A":
+          self.forecast[index]["low"] = "NA"
+        else:
+          self.forecast[index]["low"] = elem.firstChild.data
 
       if elem.nodeName == 'sunr':
         self.forecast[index]["sunrise"] = elem.firstChild.data

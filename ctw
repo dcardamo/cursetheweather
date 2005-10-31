@@ -57,7 +57,7 @@ class asciiIcons:
     self.unknown = """
                     
                     
-   NO ICON          
+                    
                     
                     
                     
@@ -97,7 +97,7 @@ class asciiIcons:
     if type == "Partly Cloudy":
       return self.partlycloudy
     elif type == "Mostly Cloudy":
-      return self.cloudy
+      return self.partlycloudy
     elif type == "Cloudy":
       return self.cloudy
     elif type == "Clear":
