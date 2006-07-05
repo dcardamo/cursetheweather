@@ -7,7 +7,7 @@
 # Licensed under the GNU GPL version 2.0
 # See GPL.gz in source distribution for more information
 
-import sys,time,string
+import sys,time,string,urllib2
 from threading import Timer
 
 import curses
