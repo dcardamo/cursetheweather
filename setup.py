@@ -4,7 +4,7 @@
 from distutils.core import setup
 
 setup(name="CurseTheWeather",
-		version="0.3",
+		version="0.4",
 		description="Weather feed backend and ncurses front end for current and forecast weather",
 		author="Dan Cardamore",
 		author_email="dan@hld.ca",
