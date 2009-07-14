@@ -13,7 +13,7 @@ from threading import Timer
 import curses
 import weatherfeed
 
-version = "0.4"
+version = "0.5"
 
 class asciiIcons:
   def __init__(self):
