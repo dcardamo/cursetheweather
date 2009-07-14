@@ -183,7 +183,7 @@ def scnForecast(win):
     forecastWindowsCreated = True
     day = 0
     dayWindows = []
-    while day < 10:
+    while day < 5:
       if day < 5:
         try:
           dayWindows.append(win.derwin(int(maxy/5),int(maxx/2),int(day*(maxy/5))+1,1))
@@ -195,7 +195,7 @@ def scnForecast(win):
       day += 1
 
   day = 0
-  while day < 10:
+  while day < 5:
     scnDay(day)
     day+=1
   win.box()
