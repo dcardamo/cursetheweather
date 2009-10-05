@@ -13,7 +13,7 @@ from threading import Timer
 import curses
 import weatherfeed
 
-version = "0.5"
+version = "0.6"
 
 class asciiIcons:
   def __init__(self):
@@ -186,11 +186,11 @@ def scnForecast(win):
     while day < 5:
       if day < 5:
         try:
-          dayWindows.append(win.derwin(int(maxy/5),int(maxx/2),int(day*(maxy/5))+1,1))
+          dayWindows.append(win.derwin(int(maxy/5),maxx,int(day*(maxy/5))+1,1))
         except curses.error: pass
       else:
         try:
-          dayWindows.append(win.derwin(int(maxy/5),int(maxx/2),int((day-5)*(maxy/5))+1,int(maxx/2)+1))
+          dayWindows.append(win.derwin(int(maxy/5),maxx,int((day-5)*(maxy/5))+1,int(maxx/2)+1))
         except curses.error: pass
       day += 1
 
@@ -212,7 +212,7 @@ def scnDay(day):
     return  #this one wasn't allocated a window so just return
   win.clear()
   maxy,maxx = win.getmaxyx()
-  maxx -= 2
+  maxx -= 13
   line = 1
 
   try:
@@ -220,7 +220,7 @@ def scnDay(day):
                                          weather.forecast[day]["low"]));line+=0
   except curses.error: pass
   try:
-    win.addstr(line,15,"Wind:%s %s" %( weather.forecast[day]["day"]["wind"]["speed"],
+    win.addstr(line,maxx,"Wind:%s %s" %( weather.forecast[day]["day"]["wind"]["speed"],
                                     weather.forecast[day]["day"]["wind"]["direction"])
              );line+=1
   except curses.error: pass
@@ -228,7 +228,7 @@ def scnDay(day):
     win.addstr(line,1,"%s" %(weather.forecast[day]["day"]["type"]));line+=0
   except curses.error: pass
   try:
-    win.addstr(line,19,"POP: %s" %(weather.forecast[day]["day"]["pop"]));line+=1
+    win.addstr(line,maxx,"POP: %s" %(weather.forecast[day]["day"]["pop"]));line+=1
   except curses.error: pass
 
   try:
